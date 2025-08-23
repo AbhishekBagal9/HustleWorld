@@ -30,11 +30,12 @@ function Login() {
     } else {
       setLoginInput({ ...LoginInput, [name]: value });
     }
-  };
-  const showData = () =>{
-    console.log(SignupInput);
-    console.log(LoginInput);
+  }; 
+  const showData = (type) =>{
+   const inputData = type === "signup" ? SignupInput : LoginInput;
+   console.log(inputData);
   }
+  
   return (
     <div className="flex items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -91,7 +92,7 @@ function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={showData}>Signup</Button>
+                <Button onClick={()=>showData("signup")}>Signup</Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -131,7 +132,7 @@ function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={showData}>Login</Button>
+                <Button onClick={()=>showData("Login")}>Login</Button>
               </CardFooter>
             </Card>
           </TabsContent>
