@@ -1,20 +1,22 @@
-import User from "../models/user.model.js";
-import bycrypt from "bcryptjs";
+import {User} from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+
+import { genrateToken } from "../utils/genrateToken.js";
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ sucess: false, message: "All fields are required" }); //json is readable format so send data readable format;
+        .json({ success: false, message: "All fields are required" }); //json is readable format so send data readable format;
     }
-    await User.findOne({ email });
-    if (User) {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res
         .status(400)
-        .json({ sucess: false, massage: "User already exists" });
+        .json({ success: false, message: "user already exists" });
     }
-    const hashedPassword = await bycrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
       email,
@@ -22,12 +24,12 @@ export const register = async (req, res) => {
     });
     return res
       .status(201)
-      .json({ sucess: true, massage: "User created successfully" });
+      .json({ success: true, message: "user created successfully" });
   } catch (error) {
     console.log(error);
     return res
       .status(500)
-      .json({ sucess: false, massage: "failed to register" });
+      .json({ success: false, message: "failed to register" });
   }
 };
 
@@ -35,21 +37,24 @@ export const login = async (req,res)=>{
   try{
     const {email,password} = req.body;
     if(!email || !password){
-      return res.status(400).json({sucess:false,massage:"All fields are required"})
+      return res.status(400).json({success:false,message:"All fields are required"})
     }
     const user = await User.findOne({email}); //so here actul we are usig email:email
     if(!user){
-      return res.status(400).json({sucess:false,massage:"User does not exist"})
+      return res.status(400).json({success:false,message:"user does not exist"})
     }
-    const isMatch = await bycrypt.compare(password,User.password);
+    const isMatch = await bcrypt.compare(password,user.password);
     if(! isMatch){
-      return res.status(400).json({sucess:false,massage:"Incorrect Email or Password"})
+      return res.status(400).json({success:false,message:"Incorrect Email or Password"})
     }
+ 
+    genrateToken(res,user,"Login Successfully");
+
   }
   catch (error) {
     console.log(error);
     return res
       .status(500)
-      .json({ sucess: false, massage: "failed to Login" });
+      .json({ success: false, message: "failed to Login" });
   }
 }
