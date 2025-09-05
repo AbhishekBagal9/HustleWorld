@@ -12,20 +12,21 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://hustle-world-chj9.vercel.app"
-];
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://hustle-world-chj9.vercel.app"
+  ],
+  credentials: true
+}));
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
-
-const PORT = process.env.PORT || 3000;
 app.use("/api/v1/user", userRoute);
 
 app.listen(PORT, () => {
