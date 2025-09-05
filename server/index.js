@@ -12,10 +12,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-   origin: "http://localhost:5173",
-  credentials:true
-}));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://hustle-world-chj9.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 
 const PORT = process.env.PORT || 3000;
