@@ -10,7 +10,7 @@ export const register = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All fields are required" }); //json is readable format so send data readable format;
     }
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email }); // insteed of  writing email:email we do email only
     if (existingUser) {
       return res
         .status(400)

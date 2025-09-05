@@ -1,5 +1,6 @@
-import { AppWindowIcon, CodeIcon } from "lucide-react";
-import { useState } from "react";
+import { AppWindowIcon, CodeIcon, Loader,Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRegisterUserMutation } from "../../features/authApi";
+import { useDispatch } from "react-redux";
+import { useLoginUserMutation } from "../../features/authApi";
 
 function Login() {
   const [SignupInput, setSignupInput] = useState({
@@ -21,21 +25,64 @@ function Login() {
     password: "",
   });
   const [LoginInput, setLoginInput] = useState({ email: "", password: "" });
+  const [
+    registerUser,
+    {
+      data: registerData,
+      error: registerError,
+      isLoading: registerLoading,
+      isSuccess: registerISSuccess,
+    },
+  ] = useRegisterUserMutation();
+  const [
+    loginUser,
+    {
+      data: loginData,
+      error: loginError,
+      isLoading: loginLoading,
+      isSuccess: loginISSuccess,
+    },
+  ] = useLoginUserMutation();
 
   const changeInputHandler = (e, type) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+
     const { name, value } = e.target;
 
     if (type === "signup") {
-      setSignupInput({ ...SignupInput, [name]: value });
+      setSignupInput({ ...SignupInput, [name]: value }); //frome e.tareget name may come as string
     } else {
       setLoginInput({ ...LoginInput, [name]: value });
     }
-  }; 
-  const showData = (type) =>{
-   const inputData = type === "signup" ? SignupInput : LoginInput;
-   console.log(inputData);
-  }
-  
+  };
+  const showData = async (type) => {
+    const inputData = type === "signup" ? SignupInput : LoginInput;
+    console.log(inputData);
+    const action = type === "signup" ? registerUser : loginUser;
+    await action(inputData);
+  };
+  useEffect(() => {
+    if (registerISSuccess && registerData) {
+      toast.success(registerData.data.message || "Registration Successfull");
+    }
+    if (registerError) {
+      toast.error(registerError.data.message || "Registration Failed");
+    }
+    if (loginISSuccess && loginData) {
+      toast.success(loginData.data.message || "Login Successfull");
+    }
+    if (loginError) {
+      toast.error(loginError.data.message || "Login Failed");
+    }
+  }, [
+    registerISSuccess,
+    loginISSuccess,
+    registerData,
+    loginData,
+    registerError,
+    loginError,
+  ]);
   return (
     <div className="flex items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -59,7 +106,7 @@ function Login() {
                   <Input
                     name="name"
                     value={SignupInput.name}
-                    onChange={(e) => changeInputHandler(e, "signup")}
+                    onChange={(e) => changeInputHandler(e, "signup")} //here on change in event we have our e.target so we need  to pass it ass paramater.
                     id="tabs-demo-name"
                     type="text"
                     placeholder="Eg. Abhi"
@@ -92,7 +139,16 @@ function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={()=>showData("signup")}>Signup</Button>
+                <Button onClick={() => showData("signup")}>
+                  {registerLoading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      please wait
+                    </>
+                  ) : (
+                    "Sign Up"
+                  )}
+                </Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -110,7 +166,7 @@ function Login() {
                   <Label htmlFor="tabs-demo-current">Email</Label>
                   <Input
                     name="email"
-                    onChange={(e) => changeInputHandler(e, "Login")}
+                    onChange={(e) => changeInputHandler(e, "login")}
                     value={LoginInput.email}
                     id="tabs-demo-current"
                     type="email"
@@ -123,7 +179,7 @@ function Login() {
                   <Input
                     name="password"
                     value={LoginInput.password}
-                    onChange={(e) => changeInputHandler(e, "Login")}
+                    onChange={(e) => changeInputHandler(e, "login")}
                     id="tabs-demo-new"
                     type="password"
                     placeholder="Eg. Abc@123"
@@ -132,7 +188,19 @@ function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={()=>showData("Login")}>Login</Button>
+                <Button
+                  disabled={loginLoading}
+                  onClick={() => showData("login")}
+                >
+                  {loginLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      please wait
+                    </>
+                  ) : (
+                    "login"
+                  )}
+                </Button>
               </CardFooter>
             </Card>
           </TabsContent>
