@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRegisterUserMutation } from "../../features/authApi";
-import { useDispatch } from "react-redux";
 import { useLoginUserMutation } from "../../features/authApi";
 
 function Login() {
@@ -63,26 +62,31 @@ function Login() {
     await action(inputData);
   };
   useEffect(() => {
-    if (registerISSuccess && registerData) {
-      toast.success(registerData.data.message || "Registration Successfull");
-    }
-    if (registerError) {
-      toast.error(registerError.data.message || "Registration Failed");
-    }
-    if (loginISSuccess && loginData) {
-      toast.success(loginData.data.message || "Login Successfull");
-    }
-    if (loginError) {
-      toast.error(loginError.data.message || "Login Failed");
-    }
-  }, [
-    registerISSuccess,
-    loginISSuccess,
-    registerData,
-    loginData,
-    registerError,
-    loginError,
-  ]);
+  if (registerISSuccess && registerData) {
+    toast.success(registerData?.data?.message || "Registration Successful");
+  }
+  if (registerError) {
+    toast.error(
+      registerError?.data?.message || registerError?.error || "Registration Failed"
+    );
+  }
+  if (loginISSuccess && loginData) {
+    toast.success(loginData?.data?.message || "Login Successful");
+  }
+  if (loginError) {
+    toast.error(
+      loginError?.data?.message || loginError?.error || "Login Failed"
+    );
+  }
+}, [
+  registerISSuccess,
+  loginISSuccess,
+  registerData,
+  loginData,
+  registerError,
+  loginError,
+]);
+
   return (
     <div className="flex items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-6">
