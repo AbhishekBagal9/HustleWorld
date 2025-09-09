@@ -14,19 +14,20 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "https://hustle-world-chj9.vercel.app"
+    process.env.FRONTEND_URL_LOCAL,
+    process.env.FRONTEND_URL_PROD
   ],
   credentials: true
 }));
 
+ const PORT = process.env.PORT || 8080;
+
 if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 8080;
+
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Local server running on http://localhost:${PORT}`);
   });
 }
-
 app.use("/api/v1/user", userRoute);
 
 app.listen(PORT, () => {
