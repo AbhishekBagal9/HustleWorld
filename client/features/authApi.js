@@ -1,9 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+ const baseUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_API_URL_LOCAL   // when running `npm run dev`
+  : import.meta.env.VITE_API_URL_PROD;  // when deployed on Vercel
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl:import.meta.env.VITE_API_URL,
+    baseUrl,
     credentials: "include",
   }),
   endpoints: (builder) => ({
