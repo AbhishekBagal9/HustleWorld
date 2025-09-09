@@ -20,6 +20,8 @@ app.use(cors({
   credentials: true
 }));
 
+app.use("/api/v1/user", userRoute);
+
  const PORT = process.env.PORT || 8080;
 
 if (process.env.NODE_ENV !== "production") {
@@ -28,9 +30,5 @@ if (process.env.NODE_ENV !== "production") {
     console.log(`🚀 Local server running on http://localhost:${PORT}`);
   });
 }
-app.use("/api/v1/user", userRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port "http://localhost:${PORT}"`);
-});
-
+export default app;
