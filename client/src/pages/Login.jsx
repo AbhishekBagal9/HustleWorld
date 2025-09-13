@@ -88,8 +88,8 @@ function Login() {
 ]);
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="flex w-full max-w-sm flex-col gap-6">
+    <div className="flex items-center justify-center ">
+      <div className="flex w-full max-w-sm flex-col gap-6 mt-20">
         <Tabs defaultValue="account">
           <TabsList>
             <TabsTrigger value="Signup">Signup</TabsTrigger>
