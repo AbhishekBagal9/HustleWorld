@@ -17,7 +17,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <School size={30} />
           <h1 className="hidden md:block font-extrabold text-2xl">
-            E-Learning
+            HustleWorld
           </h1>
         </div>
         <div>
@@ -37,7 +37,7 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="fex items-center gap-2">
-              <Button variant="outline">Login</Button> <Button>Sign Up</Button>
+              <Button variant="outline">Loginn</Button> <Button>Sign Up</Button>
             </div>
           )}
         </div>
