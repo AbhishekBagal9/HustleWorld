@@ -92,7 +92,7 @@ function Login() {
       <div className="flex w-full max-w-sm flex-col gap-6 mt-20">
         <Tabs defaultValue="account">
           <TabsList>
-            <TabsTrigger value="Signup">Signupp</TabsTrigger>
+            <TabsTrigger value="Signup">Signup</TabsTrigger>
             <TabsTrigger value="Login">Login</TabsTrigger>
           </TabsList>
           <TabsContent value="Signup">
