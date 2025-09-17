@@ -18,7 +18,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Darkmode from "../../pages/Darkmode";
+import Darkmode from "../../Darkmode";
 import { SheetClose, SheetFooter } from "./sheet";
 
 const Navbar = () => {
@@ -80,7 +80,7 @@ const MobileNavbar = () => {
   const role = "instructor";
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <Button
           size="icon"
           className="rounded-full bg-gray-200 hover:bg-gray-200 varint=outline text-black"
