@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRegisterUserMutation } from "../../features/authApi";
 import { useLoginUserMutation } from "../../features/authApi";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [SignupInput, setSignupInput] = useState({
@@ -42,6 +43,8 @@ function Login() {
       isSuccess: loginISSuccess,
     },
   ] = useLoginUserMutation();
+
+  const navigate = useNavigate();
 
   const changeInputHandler = (e, type) => {
     console.log(e.target.name);
@@ -72,6 +75,7 @@ function Login() {
   }
   if (loginISSuccess && loginData) {
     toast.success(loginData?.data?.message || "Login Successful");
+    navigate("/");
   }
   if (loginError) {
     toast.error(
